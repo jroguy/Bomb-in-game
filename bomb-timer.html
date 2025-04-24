@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Temporizador Bomb in Game</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      background-color: #000000;
+      color: white;
+      padding-top: 40px;
+    }
+    h1 {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    #time {
+      font-size: 60px;
+      margin: 20px;
+    }
+    .btn {
+      margin: 10px;
+      font-size: 18px;
+      padding: 10px 20px;
+      background-color: #d62828;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      color: white;
+      display: inline-flex;
+      align-items: center;
+    }
+    .btn img {
+      width: 30px;
+      height: 30px;
+      margin-right: 10px;
+    }
+    .btn:hover {
+      background-color: #a61d1d;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Temporizador Bomb in Game</h1>
+
+  <div id="time">15:00</div>
+
+  <button class="btn" onclick="changeTime(-1)">
+    <img src="bomba.png" alt="Bomba"> -1 min
+  </button>
+  <button class="btn" onclick="changeTime(1)">
+    <img src="bomba.png" alt="Bomba"> +1 min
+  </button>
+  <button class="btn" onclick="changeTime(-2)">
+    <img src="bomba.png" alt="Bomba"> -2 min
+  </button>
+
+  <br>
+
+  <button class="btn" onclick="startTimer()">Iniciar</button>
+  <button class="btn" onclick="pauseTimer()">Pausar</button>
+  <button class="btn" onclick="resetTimer()">Reiniciar</button>
+
+  <script>
+    let totalSeconds = 900;
+    let interval = null;
+
+    function updateDisplay() {
+      let minutes = Math.floor(totalSeconds / 60);
+      let seconds = totalSeconds % 60;
+      document.getElementById("time").textContent =
+        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      if (interval) return;
+      interval = setInterval(() => {
+        if (totalSeconds > 0) {
+          totalSeconds--;
+          updateDisplay();
+        } else {
+          clearInterval(interval);
+          interval = null;
+          alert("¡BOOM! Se acabó el tiempo.");
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(interval);
+      interval = null;
+    }
+
+    function resetTimer() {
+      totalSeconds = 900;
+      updateDisplay();
+      pauseTimer();
+    }
+
+    function changeTime(mins) {
+      totalSeconds += mins * 60;
+      if (totalSeconds < 0) totalSeconds = 0;
+      updateDisplay();
+    }
+
+    updateDisplay();
+  </script>
+</body>
+</html>
